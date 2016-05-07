@@ -5,6 +5,15 @@ CAM_WIDTH=320
 CAM_HEIGHT=240
 DEVICE=/dev/video0
 
+# To keep the overlay on all workspaces (Ubuntu 14.04):
+#
+# 1. Focus on the webcam overlay window, press Alt+Space to open context menu
+#    and select 'Always on Visible Workspace'; or
+# 2. Install 'compizconfig-settings-manager' and 'compiz-plugins', open up
+#    compiz settings manager, enable 'Windows Rules' plugin and add to
+#    'Sticky' rule: 'class=MPlayer'. This will make every MPlayer window to
+#    be always visible.
+
 # Make sure 'mplayer' is available
 if ! type "mplayer" > /dev/null; then
   echo "You need to install 'mplayer' first."
