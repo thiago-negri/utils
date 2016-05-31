@@ -14,7 +14,7 @@ alias () {
 alias s         status --short --branch
 alias l         log --graph --oneline --decorate
 
-alias ss        status --short --untracked-files=no
+alias ss        status --short --branch --untracked-files=no
 alias ds        diff --staged
 alias co        checkout
 alias aa        add -A
