@@ -11,7 +11,7 @@ alias () {
   git config --global alias.$name "$args"
 }
 
-alias s         status --short
+alias s         status --short --branch
 alias l         log --graph --oneline --decorate
 
 alias ss        status --short --untracked-files=no
