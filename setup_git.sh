@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # Setup aliases
@@ -40,4 +40,13 @@ echo "Setting up template"
 
 git config --global commit.template git_commit_template.txt
 
+#
+# Setup global ignores
+#
+
+echo "Setting up global ignores"
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+git config --global core.excludesfile "$DIR/gitignore_global"
 
