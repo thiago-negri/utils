@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 #
 # Setup aliases
 #
@@ -38,15 +40,13 @@ alias aliases   config --get-regexp alias.*
 
 echo "Setting up template"
 
-git config --global commit.template git_commit_template.txt
+git config --global commit.template "$DIR/git_commit_template.txt"
 
 #
 # Setup global ignores
 #
 
 echo "Setting up global ignores"
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 git config --global core.excludesfile "$DIR/gitignore_global"
 
