@@ -11,7 +11,7 @@ alias () {
   shift
   args=$*
 
-  echo "git $name\n\tgit $args"
+  echo "git $name --> git $args"
 
   git config --global --unset-all alias.$name
   git config --global alias.$name "$args"
