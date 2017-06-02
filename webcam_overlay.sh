@@ -26,7 +26,7 @@ SCREEN_HEIGHT=$(xdpyinfo | awk -F'[ x]+' '/dimensions:/{print $4}')
 
 # Calculate horizontal and vertical offset to position the webcam overlay at
 # bottom right corner
-HORIZONTAL_OFFSET=$(expr $SCREEN_WIDTH - $CAM_WIDTH)
+HORIZONTAL_OFFSET=$(expr $SCREEN_WIDTH / 2 - $CAM_WIDTH)
 VERTICAL_OFFSET=$(expr $SCREEN_HEIGHT - $CAM_HEIGHT) 
 
 mplayer -ontop -noborder \
