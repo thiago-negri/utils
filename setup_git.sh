@@ -26,13 +26,16 @@ alias ss        status --short --branch --untracked-files=no
 alias ds        diff --staged
 alias co        checkout
 alias aa        add -A
+alias rr        reset HEAD .
 
 alias current   log HEAD^1..HEAD
 alias cur       log HEAD^1..HEAD
 
-alias ammend    commit --amend
+alias amend     commit --amend
 alias recommit  commit --amend -C HEAD
 alias aliases   config --get-regexp alias.*
+
+alias weekupdate '!git log --oneline --no-merges --author=$(git config --get user.email) --since="7 days ago" --format="format:- %s;"'
 
 #
 # Setup commit template
