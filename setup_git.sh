@@ -27,9 +27,12 @@ alias ds        diff --staged
 alias co        checkout
 alias aa        add -A
 alias rr        reset HEAD .
+alias bb        branch --show-current
 
 alias current   log HEAD^1..HEAD
 alias cur       log HEAD^1..HEAD
+
+alias pushu     '!git push -u origin $(git branch --show-current)'
 
 alias amend     commit --amend
 alias recommit  commit --amend -C HEAD
