@@ -33,6 +33,7 @@ alias current   log HEAD^1..HEAD
 alias cur       log HEAD^1..HEAD
 
 alias pushu     '!git push -u origin $(git branch --show-current)'
+alias pullf     pull --ff-only
 
 alias amend     commit --amend
 alias recommit  commit --amend -C HEAD
