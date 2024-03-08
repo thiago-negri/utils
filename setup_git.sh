@@ -28,6 +28,7 @@ alias co        checkout
 alias aa        add -A
 alias rr        reset HEAD .
 alias bb        branch --show-current
+alias rs        '!f() { git reset --soft $(git merge-base $1 HEAD); }; f'
 
 alias current   log HEAD^1..HEAD
 alias cur       log HEAD^1..HEAD
