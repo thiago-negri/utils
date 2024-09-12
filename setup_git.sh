@@ -42,6 +42,8 @@ alias aliases   config --get-regexp alias.*
 
 alias weekupdate '!git log --oneline --no-merges --author=$(git config --get user.email) --since="7 days ago" --format="format:- %s;"'
 
+alias delete-merged-branches '!git branch --merged | grep -v \* | xargs git branch -D'
+
 #
 # Setup commit template
 #
