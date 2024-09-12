@@ -33,7 +33,7 @@ alias rs        '!f() { git reset --soft $(git merge-base $1 HEAD); }; f'
 alias current   log HEAD^1..HEAD
 alias cur       log HEAD^1..HEAD
 
-alias pushu     '!git push -u origin $(git branch --show-current)'
+alias pushu     '!git push -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias pullf     pull --ff-only
 
 alias amend     commit --amend
@@ -42,7 +42,7 @@ alias aliases   config --get-regexp alias.*
 
 alias weekupdate '!git log --oneline --no-merges --author=$(git config --get user.email) --since="7 days ago" --format="format:- %s;"'
 
-alias delete-merged-branches '!git branch --merged | grep -v \* | xargs git branch -D'
+alias delete-merged-branches '!git for-each-ref --format "%(refname:short)" --merged HEAD refs/heads/ | grep -v \* | xargs git branch -D'
 
 #
 # Setup commit template
