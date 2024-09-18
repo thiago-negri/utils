@@ -32,6 +32,7 @@ alias rs        '!f() { git reset --soft $(git merge-base $1 HEAD); }; f'
 
 alias current   log HEAD^1..HEAD
 alias cur       log HEAD^1..HEAD
+alias c         log --oneline HEAD^1..HEAD
 
 alias pushu     '!git push -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias pullf     pull --ff-only
