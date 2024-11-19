@@ -19,6 +19,11 @@ alias () {
 
 echo "Setting up aliases"
 
+alias cb        clone --bare
+alias wtl       worktree list
+alias wta       worktree add
+alias wtr       worktree remove
+
 alias s         status --short --branch
 alias l         log --graph --oneline --decorate
 
