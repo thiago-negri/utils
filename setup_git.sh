@@ -29,6 +29,7 @@ alias l         log --graph --oneline --decorate
 
 alias ss        status --short --branch --untracked-files=no
 alias ds        diff --staged
+alias d         '!git diff --name-only --relative --diff-filter=d | xargs bat --diff'
 alias co        checkout
 alias cof       "!git checkout \$(git branch --format '%(refname)' | sed 's/refs\/heads\///g' | fzf)"
 alias aa        add -A
