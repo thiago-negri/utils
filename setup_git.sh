@@ -30,6 +30,7 @@ alias l         log --graph --oneline --decorate
 alias ss        status --short --branch --untracked-files=no
 alias ds        diff --staged
 alias co        checkout
+alias cof       "!git checkout \$(git branch --format '%(refname)' | sed 's/refs\/heads\///g' | fzf)"
 alias aa        add -A
 alias rr        reset HEAD .
 alias bb        branch --show-current
@@ -66,4 +67,10 @@ git config --global commit.template "$DIR/git_commit_template.txt"
 echo "Setting up global ignores"
 
 git config --global core.excludesfile "$DIR/gitignore_global"
+
+#
+# Other configs
+#
+# Automatically remove stale branches
+git config --global fetch.prune true
 
