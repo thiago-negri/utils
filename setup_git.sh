@@ -28,12 +28,13 @@ alias s         status --short --branch
 alias l         log --graph --oneline --decorate
 
 alias ss        status --short --branch --untracked-files=no
-alias ds        diff --staged
-alias d         '!git diff --name-only --relative --diff-filter=d | xargs bat --diff'
+alias ds        diff --staged --minimal
+alias d         diff --minimal
 alias co        checkout
 alias cof       "!git checkout \$(git branch --format '%(refname)' | sed 's/refs\/heads\///g' | fzf)"
 alias aa        add -A
 alias rr        reset HEAD .
+alias b         branch
 alias bb        branch --show-current
 alias rs        '!f() { git reset --soft $(git merge-base $1 HEAD); }; f'
 
