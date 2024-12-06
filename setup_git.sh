@@ -46,6 +46,7 @@ alias pushu     '!git push -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias pullf     pull --ff-only
 alias pullr     pull --rebase
 
+alias cm        commit -m
 alias amend     commit --amend
 alias recommit  commit --amend -C HEAD
 alias aliases   config --get-regexp alias.*
