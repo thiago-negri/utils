@@ -2,6 +2,14 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# CLI tool to pipe stdout to system's clipboard
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Darwin*)    clipboard=pbcopy;;
+    MINGW*)     clipboard=clip;;
+    *)          clipboard=xclip -selection clipboard;;
+esac
+
 #
 # Setup aliases
 #
@@ -36,6 +44,7 @@ alias aa        add -A
 alias rr        reset HEAD .
 alias b         branch
 alias bb        branch --show-current
+alias bc        "!git rev-parse --abbrev-ref HEAD | $clipboard"
 alias rs        '!f() { git reset --soft $(git merge-base $1 HEAD); }; f'
 
 alias current   log HEAD^1..HEAD
