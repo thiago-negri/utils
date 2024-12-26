@@ -46,6 +46,7 @@ alias b         branch
 alias bb        branch --show-current
 alias bc        "!git rev-parse --abbrev-ref HEAD | $clipboard"
 alias rs        '!f() { git reset --soft $(git merge-base $1 HEAD); }; f'
+alias rv        remote --verbose
 
 alias current   log HEAD^1..HEAD
 alias cur       log HEAD^1..HEAD
