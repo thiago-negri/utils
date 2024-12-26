@@ -1,15 +1,15 @@
-# When accepted/merged, this commit will ...
+# Keep title under 50 columns to fit 'git log' ..|
+# When accepted/merged, this commit will ........|
 #Add ...
 #Remove ...
 #Change ...
 #Fix ...
 #Improve ...
 
+# Leave at least one blank line between title and body ................|
+# Explain why this change is being made ...............................|
+# Leave body under 72 columns .........................................|
 
-# Leave at least one blank line between title and body
-# Explain why this change is being made
-
-
-# Add links to tasks, documentation, discussions, etc.
-
+# Add links to tasks, documentation, discussions, etc. ................|
+#See:
 
