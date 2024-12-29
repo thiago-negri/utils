@@ -156,4 +156,6 @@ git config --global core.excludesfile "$DIR/gitignore_global"
 #
 # Automatically remove stale branches
 git config --global fetch.prune true
+# Checkout as-is, commit LF
+git config --global core.autocrlf input
 
