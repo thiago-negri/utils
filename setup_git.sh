@@ -57,6 +57,14 @@ alias co        checkout
 # 'git cof' fuzzy find and checkout a branch
 alias cof       "!git checkout \$(git branch --format '%(refname)' | sed 's/refs\/heads\///g' | fzf)"
 
+# 'git resf / git resolvef' to list conflicting files and opening one of them in nvim
+alias resf      "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf)"
+alias resolvef  "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf)"
+
+# 'git res[olve]' to open all conflicting files in nvim
+alias res       "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative)"
+alias resolve   "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative)"
+
 # 'git aa' stage everything
 alias aa        add -A
 
@@ -85,9 +93,9 @@ alias rs        '!f() { git reset --soft $(git merge-base $1 HEAD); }; f'
 # 'git rv' list remotes
 alias rv        remote --verbose
 
-# 'git current' / 'git cur' shows the current commit message
-alias current   log HEAD^1..HEAD
+# 'git cur[rent]' shows the current commit message
 alias cur       log HEAD^1..HEAD
+alias current   log HEAD^1..HEAD
 
 # 'git c' quick current commit
 alias c         log --oneline HEAD^1..HEAD
