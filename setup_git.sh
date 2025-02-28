@@ -65,8 +65,11 @@ alias resolvef  "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only -
 alias res       "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative)"
 alias resolve   "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative)"
 
-# 'git aa' stage everything
+# 'git aa' stage everything (add all)
 alias aa        add -A
+
+# 'git ap' select chunks do stage (add patch)
+alias ap        add -p
 
 # 'git rr' unstage everything
 alias rr        reset HEAD .
