@@ -51,6 +51,9 @@ alias d         diff --minimal
 # 'git ds' shows staged diffs
 alias ds        diff --staged --minimal
 
+# 'git dc' shows the diff created by current commit
+alias dc        diff HEAD~1..HEAD
+
 # 'git co <ref>' to switch branches / tags / commits
 alias co        checkout
 
