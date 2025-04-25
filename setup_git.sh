@@ -173,3 +173,22 @@ git config --global fetch.prune true
 # Checkout as-is, commit LF
 git config --global core.autocrlf input
 
+#
+# Set template hooks
+#
+# They will call the original files, so we can update the hooks without the need to recopy files on old repos
+mkdir -p "$DIR/git-template-gen/hooks/"
+for file in ./git-template/hooks/*; do
+  filename=$(basename "$file")
+  echo '#!/bin/bash' > "$DIR/git-template-gen/hooks/$filename"
+  echo "$DIR/git-template/hooks/$filename \"\$@\"" >> "$DIR/git-template-gen/hooks/$filename"
+  chmod +x "$DIR/git-template-gen/hooks/$filename"
+done
+git config --global init.templatedir "$DIR/git-template-gen"
+
+# Set default editor to be NeoVim, and automatically search for the first '@'
+# Works great for new commit messages because I have '@' in key parts of the
+# template.
+# Gives an error when editing a commit message, and I could not figure out how
+# to silence that error. :(
+git config --global core.editor "nvim -c '/@'"
