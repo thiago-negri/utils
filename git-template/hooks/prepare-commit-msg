@@ -5,9 +5,23 @@ BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 if [[ $BRANCH_NAME =~ (PPSVS-[0-9]+) ]]; then
   TICKET="${BASH_REMATCH[1]}"
 
+  # Determine which sed to use
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    if command -v gsed >/dev/null 2>&1; then
+      SED_CMD="gsed"
+    else
+      echo "gsed (GNU sed) is not installed. Please install it with: brew install gnu-sed"
+      exit 1
+    fi
+  else
+    # Linux or Windows (WSL, Git Bash, etc.)
+    SED_CMD="sed"
+  fi
+
   # Prefix title with ticket number
-  sed -i.bak -e "0,/@/s/@/$TICKET @/" $1
+  $SED_CMD -i.bak -e "0,/@/s/@/$TICKET @/" $1
 
   # Add issue link as trailer
-  sed -i.bak -e "s/#Issue:/Issue: https:\/\/everydayhealth.atlassian.net\/browse\/$TICKET/" $1
+  $SED_CMD -i.bak -e "s/#Issue:/Issue: https:\/\/everydayhealth.atlassian.net\/browse\/$TICKET/" $1
 fi
