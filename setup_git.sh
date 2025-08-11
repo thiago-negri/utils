@@ -135,6 +135,9 @@ alias amend     commit --amend
 #                already pushed to a remote
 alias recommit  commit --amend -C HEAD
 
+# 'git rpf' for "recommit and push force"
+alias rpf       '!git recommit && git push --force'
+
 # 'git aliases' to list all aliases
 alias aliases   config --get-regexp alias.*
 
