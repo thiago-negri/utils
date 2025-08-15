@@ -195,3 +195,6 @@ git config --global init.templatedir "$DIR/git-template-gen"
 # Gives an error when editing a commit message, and I could not figure out how
 # to silence that error. :(
 git config --global core.editor "nvim -c '/@'"
+
+# Default branch name is 'main'
+git config --global init.defaultBranch main
