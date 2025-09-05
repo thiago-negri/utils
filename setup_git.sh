@@ -9,7 +9,7 @@ unameOut="$(uname -s)"
 case "${unameOut}" in
     Darwin*)    clipboard=pbcopy;;
     MINGW*)     clipboard=clip;;
-    *)          clipboard=xclip -selection clipboard;;
+    *)          clipboard="xclip -selection clipboard";;
 esac
 
 
@@ -84,7 +84,7 @@ alias b         branch
 alias bb        branch --show-current
 
 # 'git bc' copies the current branch name to system's clipboard
-alias bc        "!git rev-parse --abbrev-ref HEAD | $clipboard"
+alias bc        "!git rev-parse --abbrev-ref HEAD | tr -d '\\n' | $clipboard"
 
 # 'git rs <ref>' resets HEAD to the base commit between current HEAD and <ref>
 #                useful to squash multiple commits in a branch, for example
