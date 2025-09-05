@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 
 # Figure out current directory to setup global gitignore and commit template
@@ -61,8 +61,8 @@ alias co        checkout
 alias cof       "!git checkout \$(git branch --format '%(refname)' | sed 's/refs\/heads\///g' | fzf)"
 
 # 'git resf / git resolvef' to list conflicting files and opening one of them in vim
-alias resf      "!vim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf)"
-alias resolvef  "!vim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf)"
+alias resf      "!vim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf --preview 'git diff {}')"
+alias resolvef  "!vim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf --preview 'git diff {}')"
 
 # 'git res[olve]' to open all conflicting files in vim
 alias res       "!vim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative)"

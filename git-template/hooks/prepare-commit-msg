@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 

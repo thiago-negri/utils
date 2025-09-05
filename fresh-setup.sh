@@ -1,3 +1,5 @@
+## THIS IS OUTDATED
+
 sudo apt update
 
 # curl
