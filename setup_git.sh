@@ -60,13 +60,13 @@ alias co        checkout
 # 'git cof' fuzzy find and checkout a branch
 alias cof       "!git checkout \$(git branch --format '%(refname)' | sed 's/refs\/heads\///g' | fzf)"
 
-# 'git resf / git resolvef' to list conflicting files and opening one of them in nvim
-alias resf      "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf)"
-alias resolvef  "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf)"
+# 'git resf / git resolvef' to list conflicting files and opening one of them in vim
+alias resf      "!vim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf)"
+alias resolvef  "!vim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative | fzf)"
 
-# 'git res[olve]' to open all conflicting files in nvim
-alias res       "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative)"
-alias resolve   "!nvim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative)"
+# 'git res[olve]' to open all conflicting files in vim
+alias res       "!vim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative)"
+alias resolve   "!vim -c '/<<<<<<<\|=======\|>>>>>>>' \$(git diff --name-only --diff-filter=U --relative)"
 
 # 'git aa' stage everything (add all)
 alias aa        add -A
@@ -194,7 +194,7 @@ git config --global init.templatedir "$DIR/git-template-gen"
 # template.
 # Gives an error when editing a commit message, and I could not figure out how
 # to silence that error. :(
-git config --global core.editor "nvim -c '/@'"
+git config --global core.editor "vim -c '/@'"
 
 # Default branch name is 'main'
 git config --global init.defaultBranch main
