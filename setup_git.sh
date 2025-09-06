@@ -88,12 +88,12 @@ alias sync      "!f() {
                    else
                      printf 'sync(push): '
                      local pp=\$(git push --porcelain 2>/dev/null | grep 'refs/' | awk '{print \$2}')
-                     if grep -q \"[up to date]\" \"$pp\"; then
+                     if echo \"\$pp\" | grep -q \"[up to date]\"; then
                        echo 'up to date'
-                     elif grep -q \"[rejected]\" \"$pp\"; then
+                     elif echo \"\$pp\" | grep -q \"[rejected]\"; then
                        echo 'rejected'
                      else
-                       echo \"$pp\"
+                       echo \"\$pp\"
                      fi
                    fi
                    if test \$dirty -ne 0; then
