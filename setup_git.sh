@@ -111,59 +111,6 @@ alias sync      "!f() {
                      echo ''
                    fi
                  }; f"
-
-# 'git syncf' same as 'git sync' but it adds '--force' to the push >:)
-alias syncf     "!f() {
-                   if test ! -f $ALLOW_SYNC_FILE; then
-                     echo 'sync not allowed here'
-                     return
-                   fi
-                   if test \$(git rv | wc -l) -eq 0; then
-                     echo 'no remote'
-                     return
-                   fi
-                   local before=\$(echo '### BEFORE'; git l -n 5 --color=always --decorate=short; git s)
-                   local dirty=\$(git status -s | wc -l)
-                   if test \$dirty -ne 0; then
-                     echo 'sync(stash)'
-                     git stash -q
-                   fi
-                   printf 'sync(pullr): '
-                   local p=\$(git pullr 2>/dev/null)
-                   if echo \"\$p\" | grep -q \"up to date\"; then
-                     echo 'no changes'
-                   else
-                     echo 'changes'
-                   fi
-                   if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
-                     echo \"sync(push) not allowed for branch '\$bb'\"
-                   else
-                     printf 'sync(push --force): '
-                     local pp=\$(git push --force --porcelain 2>/dev/null | grep 'refs/' | awk -F'\t' '{print \$3}')
-                     if echo \"\$pp\" | grep -q \"up to date\"; then
-                       echo 'up to date'
-                     elif echo \"\$pp\" | grep -q \"rejected\"; then
-                       echo 'rejected'
-                     else
-                       echo \"\$pp\"
-                     fi
-                   fi
-                   if test \$dirty -ne 0; then
-                     echo 'sync(stash apply & drop)'
-                     git stash apply -q
-                     git rr -q
-                     git stash drop -q
-                   fi
-                   if test \"\$p\" != \"Already up to date.\"; then
-                     echo ''
-                     echo \"\$before\"
-                     echo ''
-                     echo '### AFTER'
-                     git l -n 5
-                     git s
-                     echo ''
-                   fi
-                 }; f"
 #
 ## GIT SYNC -- experimental -- }}}
 
