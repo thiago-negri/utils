@@ -126,9 +126,11 @@ alias l         log --graph --oneline --decorate
 
 # 'git d' shows unstaged diffs
 alias d         diff --minimal
+alias dui       "!git diff --minimal --name-only --relative | fzf --preview 'git diff --minimal --color {}'"
 
 # 'git ds' shows staged diffs
 alias ds        diff --staged --minimal
+alias dsui      "!git diff --staged --minimal --name-only --relative | fzf --preview 'git diff --staged --minimal --color {}'"
 
 # 'git dc' shows the diff created by current commit
 alias dc        diff HEAD~1..HEAD
