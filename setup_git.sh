@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 # Figure out current directory to setup global gitignore and commit template
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
