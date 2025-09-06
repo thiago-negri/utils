@@ -60,11 +60,6 @@ alias allow-sync "!f() {
 #            the file in your working tree, you will lose the change that was done in the remote (because you moved it
 #            *before* the change). as long as you review your PR contents before merging/rebasing your branches, that
 #            should not be an issue.
-#
-# FIXME 2025-09-06: Repo can be 'dirty' with only untracked files, so 'git stash' doesn't produce anything,
-#                   but we are executing 'git stash drop' anyway, which may cause the user to lose something
-#                   they have stashed.
-#
 alias sync      "!f() {
                    if test ! -f $ALLOW_SYNC_FILE; then
                      echo 'sync not allowed here'
@@ -76,7 +71,7 @@ alias sync      "!f() {
                      return
                    fi
                    local before=\$(echo '### BEFORE'; git l -n 5 --color=always --decorate=short; git s)
-                   local dirty=\$(git status -s | wc -l)
+                   local dirty=\$(git status -s --untracked-files=no | wc -l)
                    if test \$dirty -ne 0; then
                      echo 'sync(stash)'
                      git stash -q
@@ -102,7 +97,7 @@ alias sync      "!f() {
                      fi
                    fi
                    if test \$dirty -ne 0; then
-                     echo 'sync(stash apply & drop)'
+                     echo 'sync(stash pop force)'
                      git stash apply -q
                      git rr -q
                      git stash drop -q
