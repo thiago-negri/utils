@@ -66,10 +66,6 @@ alias sync      "!f() {
                      return
                    fi
                    local bb=\$(git bb)
-                   if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
-                     echo \"sync not allowed for branch '\$bb'\"
-                     return
-                   fi
                    if test \$(git rv | wc -l) -eq 0; then
                      echo 'no remote'
                      return
@@ -77,11 +73,24 @@ alias sync      "!f() {
                    local before=\$(echo '### BEFORE'; git l -n 5 --color=always --decorate=short; git s)
                    local dirty=\$(git status -s | wc -l)
                    if test \$dirty -ne 0; then
+                     echo 'sync(stash)'
                      git stash -q
                    fi
+                   printf 'sync(pullr): '
                    local p=\$(git pullr 2>/dev/null)
-                   git push -q
+                   if test \"\$p\" != \"Already up to date.\"; then
+                     echo 'changes'
+                   else
+                     echo 'no changes'
+                   fi
+                   if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
+                     echo \"sync(push) not allowed for branch '\$bb'\"
+                   else
+                     echo 'sync(push)'
+                     git push -q
+                   fi
                    if test \$dirty -ne 0; then
+                     echo 'sync(stash apply & drop)'
                      git stash apply -q
                      git rr -q
                      git stash drop -q
@@ -103,11 +112,6 @@ alias syncf     "!f() {
                      echo 'sync not allowed here'
                      return
                    fi
-                   local bb=\$(git bb)
-                   if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
-                     echo \"sync not allowed for branch '\$bb'\"
-                     return
-                   fi
                    if test \$(git rv | wc -l) -eq 0; then
                      echo 'no remote'
                      return
@@ -115,11 +119,24 @@ alias syncf     "!f() {
                    local before=\$(echo '### BEFORE'; git l -n 5 --color=always --decorate=short; git s)
                    local dirty=\$(git status -s | wc -l)
                    if test \$dirty -ne 0; then
+                     echo 'sync(stash)'
                      git stash -q
                    fi
+                   printf 'sync(pullr): '
                    local p=\$(git pullr 2>/dev/null)
-                   git push --force -q
+                   if test \"\$p\" != \"Already up to date.\"; then
+                     echo 'changes'
+                   else
+                     echo 'no changes'
+                   fi
+                   if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
+                     echo \"sync(push) not allowed for branch '\$bb'\"
+                   else
+                     echo 'sync(push --force)'
+                     git push --force -q
+                   fi
                    if test \$dirty -ne 0; then
+                     echo 'sync(stash apply & drop)'
                      git stash apply -q
                      git rr -q
                      git stash drop -q
