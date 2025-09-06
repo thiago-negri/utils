@@ -36,8 +36,16 @@ alias wtl       worktree list
 alias wta       worktree add
 alias wtr       worktree remove
 
-# 'git sync' will stash local changes, rebase with remote, and pop the stashed changes
-alias sync      "!git stash && git pullr && git stash pop"
+# 'git sync' will stash local changes, rebase with remote, and force-pop the stashed changes
+#            in case of conflicts, you may end up accidentally losing remote changes, e.g.
+#            if you rename a file locally and it had remote changes, the resulting working
+#            tree will contain the remote file (as if you didn't move it) and also contain
+#            your new version of the file (moved, but without the remote changes). so if
+#            you simply delete the file in your working tree, you will lose the change that
+#            was done in the remote (because you moved it *before* the change). as long as
+#            you review your PR contents before merging/rebasing your branches, that should
+#            not be an issue. it works like a 'pullr --autostash' but provides more output
+alias sync      "!f() { local dirty=\$(git status -s | wc -l); local before=\$(echo '### BEFORE'; git c --color=always --decorate=short; git s); if test \$dirty -ne 0; then git stash -q; fi; local p=\$(git pullr 2>/dev/null); if test \$dirty -ne 0; then git stash apply -q; git rr -q; git stash drop -q; fi; if test \"\$p\" != \"Already up to date.\"; then echo ''; echo \"\$before\"; echo ''; echo '### AFTER'; git c; git s; fi; git push }; f"
 
 # 'git s' for quick status
 alias s         status --short --branch
