@@ -86,8 +86,15 @@ alias sync      "!f() {
                    if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
                      echo \"sync(push) not allowed for branch '\$bb'\"
                    else
-                     echo 'sync(push)'
-                     git push -q
+                     printf 'sync(push): '
+                     local pp=\$(git push --porcelain 2>/dev/null | grep 'refs/' | awk '{print \$2}')
+                     if grep -q \"[up to date]\" \"$pp\"; then
+                       echo 'up to date'
+                     elif grep -q \"[rejected]\" \"$pp\"; then
+                       echo 'rejected'
+                     else
+                       echo \"$pp\"
+                     fi
                    fi
                    if test \$dirty -ne 0; then
                      echo 'sync(stash apply & drop)'
@@ -132,8 +139,15 @@ alias syncf     "!f() {
                    if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
                      echo \"sync(push) not allowed for branch '\$bb'\"
                    else
-                     echo 'sync(push --force)'
-                     git push --force -q
+                     printf 'sync(push --force): '
+                     local pp=\$(git push --force --porcelain 2>/dev/null | grep 'refs/' | awk '{print \$2}')
+                     if grep -q \"[up to date]\" \"$pp\"; then
+                       echo 'up to date'
+                     elif grep -q \"[rejected]\" \"$pp\"; then
+                       echo 'rejected'
+                     else
+                       echo \"$pp\"
+                     fi
                    fi
                    if test \$dirty -ne 0; then
                      echo 'sync(stash apply & drop)'
