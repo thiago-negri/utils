@@ -36,6 +36,9 @@ alias wtl       worktree list
 alias wta       worktree add
 alias wtr       worktree remove
 
+# 'git sync' will stash local changes, rebase with remote, and pop the stashed changes
+alias sync      "!git stash && git pullr && git stash pop"
+
 # 'git s' for quick status
 alias s         status --short --branch
 
