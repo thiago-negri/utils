@@ -77,19 +77,19 @@ alias sync      "!f() {
                    fi
                    printf 'sync(pullr): '
                    local p=\$(git pullr 2>/dev/null)
-                   if test \"\$p\" != \"Already up to date.\"; then
-                     echo 'changes'
-                   else
+                   if echo \"\$p\" | grep -q \"up to date\"; then
                      echo 'no changes'
+                   else
+                     echo 'changes'
                    fi
                    if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
                      echo \"sync(push) not allowed for branch '\$bb'\"
                    else
                      printf 'sync(push): '
-                     local pp=\$(git push --porcelain 2>/dev/null | grep 'refs/' | awk '{print \$2}')
-                     if echo \"\$pp\" | grep -q \"[up to date]\"; then
+                     local pp=\$(git push --porcelain 2>/dev/null | grep 'refs/' | awk -F'\t' '{print \$3}')
+                     if echo \"\$pp\" | grep -q \"up to date\"; then
                        echo 'up to date'
-                     elif echo \"\$pp\" | grep -q \"[rejected]\"; then
+                     elif echo \"\$pp\" | grep -q \"rejected\"; then
                        echo 'rejected'
                      else
                        echo \"\$pp\"
@@ -130,22 +130,22 @@ alias syncf     "!f() {
                    fi
                    printf 'sync(pullr): '
                    local p=\$(git pullr 2>/dev/null)
-                   if test \"\$p\" != \"Already up to date.\"; then
-                     echo 'changes'
-                   else
+                   if echo \"\$p\" | grep -q \"up to date\"; then
                      echo 'no changes'
+                   else
+                     echo 'changes'
                    fi
                    if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
                      echo \"sync(push) not allowed for branch '\$bb'\"
                    else
                      printf 'sync(push --force): '
-                     local pp=\$(git push --force --porcelain 2>/dev/null | grep 'refs/' | awk '{print \$2}')
-                     if grep -q \"[up to date]\" \"$pp\"; then
+                     local pp=\$(git push --force --porcelain 2>/dev/null | grep 'refs/' | awk -F'\t' '{print \$3}')
+                     if echo \"\$pp\" | grep -q \"up to date\"; then
                        echo 'up to date'
-                     elif grep -q \"[rejected]\" \"$pp\"; then
+                     elif echo \"\$pp\" | grep -q \"rejected\"; then
                        echo 'rejected'
                      else
-                       echo \"$pp\"
+                       echo \"\$pp\"
                      fi
                    fi
                    if test \$dirty -ne 0; then
