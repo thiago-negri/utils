@@ -4,6 +4,9 @@
 # Figure out current directory to setup global gitignore and commit template
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# Keep this in sync with the global ignore list
+ALLOW_SYNC_FILE=.__allow_sync
+
 # CLI tool to pipe stdout to system's clipboard, used to copy current branch name
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -36,6 +39,20 @@ alias wtl       worktree list
 alias wta       worktree add
 alias wtr       worktree remove
 
+## GIT SYNC -- experimental -- {{{
+#
+# 'git allow-sync' will create the 'allow_sync' file with some branches that I want to protect most of the time
+alias allow-sync "!f() {
+                    if test -f $ALLOW_SYNC_FILE; then
+                      echo '$ALLOW_SYNC_FILE already exists'
+                      return
+                    fi
+                    echo 'master'    > $ALLOW_SYNC_FILE
+                    echo 'main'     >> $ALLOW_SYNC_FILE
+                    echo 'develop'  >> $ALLOW_SYNC_FILE
+                    echo 'active'   >> $ALLOW_SYNC_FILE
+                  }; f"
+
 # 'git sync' will stash local changes, rebase with remote, push your changes, and force-pop the stashed changes
 #            in case of conflicts, you may end up accidentally losing remote changes, e.g.  if you rename a file locally
 #            and it had remote changes, the resulting working tree will contain the remote file (as if you didn't move
@@ -44,27 +61,31 @@ alias wtr       worktree remove
 #            moved it *before* the change). as long as you review your PR contents before merging/rebasing your
 #            branches, that should not be an issue.
 alias sync      "!f() {
-                   if test \$(git rv | wc -l) -eq 0; then
+                   if test ! -f $ALLOW_SYNC_FILE; then
+                     echo 'sync not allowed here'
                      return
                    fi
-
+                   local bb=\$(git bb)
+                   if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
+                     echo \"sync not allowed for branch '\$bb'\"
+                     return
+                   fi
+                   if test \$(git rv | wc -l) -eq 0; then
+                     echo 'no remote'
+                     return
+                   fi
                    local before=\$(echo '### BEFORE'; git l -n 5 --color=always --decorate=short; git s)
-
                    local dirty=\$(git status -s | wc -l)
                    if test \$dirty -ne 0; then
                      git stash -q
                    fi
-
                    local p=\$(git pullr 2>/dev/null)
-
                    git push -q
-
                    if test \$dirty -ne 0; then
                      git stash apply -q
                      git rr -q
                      git stash drop -q
                    fi
-
                    if test \"\$p\" != \"Already up to date.\"; then
                      echo ''
                      echo \"\$before\"
@@ -75,6 +96,46 @@ alias sync      "!f() {
                      echo ''
                    fi
                  }; f"
+
+# 'git syncf' same as 'git sync' but it adds '--force' to the push >:)
+alias syncf     "!f() {
+                   if test ! -f $ALLOW_SYNC_FILE; then
+                     echo 'sync not allowed here'
+                     return
+                   fi
+                   local bb=\$(git bb)
+                   if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
+                     echo \"sync not allowed for branch '\$bb'\"
+                     return
+                   fi
+                   if test \$(git rv | wc -l) -eq 0; then
+                     echo 'no remote'
+                     return
+                   fi
+                   local before=\$(echo '### BEFORE'; git l -n 5 --color=always --decorate=short; git s)
+                   local dirty=\$(git status -s | wc -l)
+                   if test \$dirty -ne 0; then
+                     git stash -q
+                   fi
+                   local p=\$(git pullr 2>/dev/null)
+                   git push --force -q
+                   if test \$dirty -ne 0; then
+                     git stash apply -q
+                     git rr -q
+                     git stash drop -q
+                   fi
+                   if test \"\$p\" != \"Already up to date.\"; then
+                     echo ''
+                     echo \"\$before\"
+                     echo ''
+                     echo '### AFTER'
+                     git l -n 5
+                     git s
+                     echo ''
+                   fi
+                 }; f"
+#
+## GIT SYNC -- experimental -- }}}
 
 # 'git s' for quick status
 alias s         status --short --branch
