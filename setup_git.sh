@@ -45,7 +45,7 @@ alias wtr       worktree remove
 #            was done in the remote (because you moved it *before* the change). as long as
 #            you review your PR contents before merging/rebasing your branches, that should
 #            not be an issue.
-alias sync      "!f() { local dirty=\$(git status -s | wc -l); local before=\$(echo '### BEFORE'; git l HEAD~3.. --color=always --decorate=short; git s); if test \$dirty -ne 0; then git stash -q; fi; local p=\$(git pullr 2>/dev/null); git push -q; if test \$dirty -ne 0; then git stash apply -q; git rr -q; git stash drop -q; fi; if test \"\$p\" != \"Already up to date.\"; then echo ''; echo \"\$before\"; echo ''; echo '### AFTER'; git l HEAD~3..; git s; echo ''; fi; }; f"
+alias sync      "!f() { local dirty=\$(git status -s | wc -l); local before=\$(echo '### BEFORE'; git l -n 5 --color=always --decorate=short; git s); if test \$dirty -ne 0; then git stash -q; fi; local p=\$(git pullr 2>/dev/null); git push -q; if test \$dirty -ne 0; then git stash apply -q; git rr -q; git stash drop -q; fi; if test \"\$p\" != \"Already up to date.\"; then echo ''; echo \"\$before\"; echo ''; echo '### AFTER'; git l -n 5; git s; echo ''; fi; }; f"
 
 # 'git s' for quick status
 alias s         status --short --branch
