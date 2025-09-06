@@ -50,15 +50,16 @@ alias allow-sync "!f() {
                     echo 'main'     >> $ALLOW_SYNC_FILE
                     echo 'develop'  >> $ALLOW_SYNC_FILE
                     echo 'active'   >> $ALLOW_SYNC_FILE
+                    echo '$ALLOW_SYNC_FILE created'
                   }; f"
 
 # 'git sync' will stash local changes, rebase with remote, push your changes, and force-pop the stashed changes
-#            in case of conflicts, you may end up accidentally losing remote changes, e.g.  if you rename a file locally
-#            and it had remote changes, the resulting working tree will contain the remote file (as if you didn't move
-#            it) and also contain your new version of the file (moved, but without the remote changes). so if you simply
-#            delete the file in your working tree, you will lose the change that was done in the remote (because you
-#            moved it *before* the change). as long as you review your PR contents before merging/rebasing your
-#            branches, that should not be an issue.
+#            in case of conflicts, you may end up losing remote changes, e.g.  if you rename a file locally and it had
+#            remote changes, the resulting working tree will contain the remote file (as if you didn't move it) and
+#            also contain your new version of the file (moved, but without the remote changes). so if you simply delete
+#            the file in your working tree, you will lose the change that was done in the remote (because you moved it
+#            *before* the change). as long as you review your PR contents before merging/rebasing your branches, that
+#            should not be an issue.
 alias sync      "!f() {
                    if test ! -f $ALLOW_SYNC_FILE; then
                      echo 'sync not allowed here'
