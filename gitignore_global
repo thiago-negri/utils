@@ -1,5 +1,6 @@
 # VIM working files
 *.swp
+*~
 
 # 'git sync' checks for this file before doing it, I only have those on projects I'm the BDFL
 .__allow_sync
