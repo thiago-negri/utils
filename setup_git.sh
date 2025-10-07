@@ -115,6 +115,10 @@ alias sync      "!f() {
 #
 ## GIT SYNC -- experimental -- }}}
 
+# 'git reinit' will delete the custom hooks I use and 'git init', effectively reinstalling the hooks
+custom_hooks=$(for f in git-template/hooks/*; do echo "'.git/hooks/$(basename "$f")'"; done | tr '\n' ' ')
+alias reinit    "!rm -f $custom_hooks && git init"
+
 # 'git s' for quick status
 alias s         status --short --branch
 
