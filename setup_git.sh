@@ -201,8 +201,8 @@ git config --global init.templatedir "$DIR/git-template-gen"
 # Set default editor to be NeoVim, and automatically search for the first '@'
 # Works great for new commit messages because I have '@' in key parts of the
 # template.
-# Gives an error when editing a commit message, and I could not figure out how
-# to silence that error. :(
+# Gives an error when editing a commit message or when editing a merge commit
+# message, and I could not figure out how to silence that error. :(
 git config --global core.editor "nvim -c '/@'"
 
 # Default branch name is 'main'
