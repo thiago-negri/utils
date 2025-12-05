@@ -3,9 +3,6 @@
 # Figure out current directory to setup global gitignore and commit template
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Keep this in sync with the global ignore list
-ALLOW_SYNC_FILE=.__allow_sync
-
 # CLI tool to pipe stdout to system's clipboard, used to copy current branch name
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -37,83 +34,6 @@ alias cb        clone --bare
 alias wtl       worktree list
 alias wta       worktree add
 alias wtr       worktree remove
-
-## GIT SYNC -- experimental -- {{{
-#
-# 'git allow-sync' will create the 'allow_sync' file with some branches that I want to protect most of the time
-alias allow-sync "!f() {
-                    if test -f $ALLOW_SYNC_FILE; then
-                      echo '$ALLOW_SYNC_FILE already exists'
-                      return
-                    fi
-                    echo 'master'    > $ALLOW_SYNC_FILE
-                    echo 'main'     >> $ALLOW_SYNC_FILE
-                    echo 'develop'  >> $ALLOW_SYNC_FILE
-                    echo 'active'   >> $ALLOW_SYNC_FILE
-                    echo '$ALLOW_SYNC_FILE created'
-                  }; f"
-
-# 'git sync' will stash local changes, rebase with remote, push your changes, and force-pop the stashed changes
-#            in case of conflicts, you may end up losing remote changes, e.g.  if you rename a file locally and it had
-#            remote changes, the resulting working tree will contain the remote file (as if you didn't move it) and
-#            also contain your new version of the file (moved, but without the remote changes). so if you simply delete
-#            the file in your working tree, you will lose the change that was done in the remote (because you moved it
-#            *before* the change). as long as you review your PR contents before merging/rebasing your branches, that
-#            should not be an issue.
-alias sync      "!f() {
-                   if test ! -f $ALLOW_SYNC_FILE; then
-                     echo 'sync not allowed here'
-                     return
-                   fi
-                   local bb=\$(git bb)
-                   if test \$(git rv | wc -l) -eq 0; then
-                     echo 'no remote'
-                     return
-                   fi
-                   local before=\$(echo '### BEFORE'; git l -n 5 --color=always --decorate=short; git s)
-                   local dirty=\$(git status -s --untracked-files=no | wc -l)
-                   if test \$dirty -ne 0; then
-                     echo 'sync(stash)'
-                     git stash -q
-                   fi
-                   printf 'sync(pullr): '
-                   local p=\$(git pullr 2>/dev/null)
-                   if echo \"\$p\" | grep -q \"up to date\"; then
-                     echo 'no changes'
-                   else
-                     echo 'changes'
-                   fi
-                   if grep -q \"\$bb\" $ALLOW_SYNC_FILE; then
-                     echo \"sync(push) not allowed for branch '\$bb'\"
-                   else
-                     printf 'sync(push): '
-                     local pp=\$(git push --porcelain 2>/dev/null | grep 'refs/' | awk -F'\t' '{print \$3}')
-                     if echo \"\$pp\" | grep -q \"up to date\"; then
-                       echo 'up to date'
-                     elif echo \"\$pp\" | grep -q \"rejected\"; then
-                       echo 'rejected'
-                     else
-                       echo \"\$pp\"
-                     fi
-                   fi
-                   if test \$dirty -ne 0; then
-                     echo 'sync(stash pop force)'
-                     git stash apply -q
-                     git rr -q
-                     git stash drop -q
-                   fi
-                   if test \"\$p\" != \"Already up to date.\"; then
-                     echo ''
-                     echo \"\$before\"
-                     echo ''
-                     echo '### AFTER'
-                     git l -n 5
-                     git s
-                     echo ''
-                   fi
-                 }; f"
-#
-## GIT SYNC -- experimental -- }}}
 
 # 'git reinit' will delete the custom hooks I use and 'git init', effectively reinstalling the hooks
 custom_hooks=$(for f in git-template/hooks/*; do echo "'.git/hooks/$(basename "$f")'"; done | tr '\n' ' ')
@@ -180,6 +100,10 @@ alias bc        "!git rev-parse --abbrev-ref HEAD | tr -d '\\n' | $clipboard"
 #                $ git cm "new feature squashed into a single commit"
 #                $ git push --force # requires --force because you're rewriting history
 alias rs        '!f() { git reset --soft $(git merge-base $1 HEAD); }; f'
+
+# 'git ri <ref>' rebase interactive to the base commit between current HEAD and
+#                <ref>
+alias ri        '!f() { git rebase -i $(git merge-base $1 HEAD); }; f'
 
 # 'git rv' list remotes
 alias rv        remote --verbose
