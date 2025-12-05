@@ -192,7 +192,7 @@ git config --global core.autocrlf input
 mkdir -p "$DIR/git-template-gen/hooks/"
 for file in ./git-template/hooks/*; do
   filename=$(basename "$file")
-  echo '#!/bin/bash' > "$DIR/git-template-gen/hooks/$filename"
+  echo '#!/usr/bin/env bash' > "$DIR/git-template-gen/hooks/$filename"
   echo "$DIR/git-template/hooks/$filename \"\$@\"" >> "$DIR/git-template-gen/hooks/$filename"
   chmod +x "$DIR/git-template-gen/hooks/$filename"
 done
