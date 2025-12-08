@@ -50,10 +50,14 @@ alias l         log --graph --oneline --decorate
 
 # 'git d' shows unstaged diffs
 alias d         diff --minimal
+
+# 'git dui' shows unstaged diffs in a UI (fzf)
 alias dui       "!git diff --minimal --name-only --relative | fzf --preview 'git diff --minimal --color {}'"
 
 # 'git ds' shows staged diffs
 alias ds        diff --staged --minimal
+
+# 'git dsui' shows staged diffs in a UI (fzf)
 alias dsui      "!git diff --staged --minimal --name-only --relative | fzf --preview 'git diff --staged --minimal --color {}'"
 
 # 'git dc' shows the diff created by current commit
@@ -84,6 +88,9 @@ alias rr        reset HEAD .
 
 # 'git b' list all local branches
 alias b         branch
+
+# 'git br' list all branches, including remote
+alias br        branch --remote
 
 # 'git bb' shows current branch name
 alias bb        branch --show-current
