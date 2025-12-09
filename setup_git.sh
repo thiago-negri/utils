@@ -48,6 +48,9 @@ alias ss        status --short --branch --untracked-files=no
 # 'git l' shows a sane log
 alias l         log --graph --oneline --decorate
 
+# 'git ll' shows a short sane log
+alias ll        log --graph --oneline --decorate -10
+
 # 'git d' shows unstaged diffs
 alias d         diff --minimal
 
