@@ -28,9 +28,11 @@ trap 'kill $(jobs -p)' INT TERM
 
 emit
 pactl subscribe | while read -r line; do
-    if [[ "$line" =~ 'change' ]]; then
-        emit
-    fi
+    case "$line" in
+        "Event 'change' on sink "*)
+            emit
+            ;;
+    esac
 done &
 
 wait
