@@ -1,8 +1,3 @@
-asdf
-hasdfh
-ddd
-sdafasdfsssddd
-ffff
-sss
-fff
-ssss
+archive. moved to codeberg
+
+https://codeberg.org/evohunz/config

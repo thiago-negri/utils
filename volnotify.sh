@@ -6,12 +6,13 @@
 #
 vol() {
     local v
-    v=$(wpctl get-volume @DEFAULT_SINK@)
-    if [[ "$v" =~ "[MUTED]" ]]; then
+    v=$(pactl get-sink-mute @DEFAULT_SINK@)
+    if [ "$v" = "Mute: yes" ]; then
         echo "MUTED"
     else
-        v=$(echo "$v" | cut -d' ' -f2)
-        echo "$v * 100" | bc | cut -d. -f1
+        # v=$(pactl get-sink-volume @DEFAULT_SINK@ | cut -d' ' -f6)
+        v=$(pactl get-sink-volume @DEFAULT_SINK@ | head -n1 | cut -d'/' -f2 | tr -d '[:blank:]')
+        echo "${v%\%}"
     fi
 }
 
